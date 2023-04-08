@@ -90,7 +90,7 @@ Module.register('MMM-SystemStats', {
       },
       sysLoad: {
         text: 'SYS_LOAD',
-        icon: 'fa-tachometer-half',
+        icon: 'fa-tachometer-alt',
       },
       freeMem: {
         text: 'RAM_FREE',
