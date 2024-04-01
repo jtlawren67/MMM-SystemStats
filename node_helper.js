@@ -8,9 +8,9 @@
  */
 
 const NodeHelper = require('node_helper');
-var async = require('async');
-var exec = require('child_process').exec;
-var request = require('request');
+const async = require('async');
+const exec = require('child_process').exec;
+const request = require('request');
 
 module.exports = NodeHelper.create({
   start: function() {
@@ -19,7 +19,7 @@ module.exports = NodeHelper.create({
 
   // Subclass socketNotificationReceived received.
   socketNotificationReceived: function(notification, payload) {
-    var self = this;
+    const self = this;
 
     if (notification === 'CONFIG') {
       this.config = payload;
@@ -41,9 +41,9 @@ module.exports = NodeHelper.create({
   },
 
   getStats: function() {
-    var self = this;
+    const self = this;
 
-    var temp_conv = '';
+    let temp_conv = '';
     switch (this.config.units) {
     case "imperial":
         temp_conv = 'awk \'{printf("%.1f°F\\n",(($1*1.8)/1e3)+32)}\'';
@@ -57,6 +57,7 @@ module.exports = NodeHelper.create({
         temp_conv = 'awk \'{printf("%.1f°K\\n",($1/1e3)+273.15)}\'';
         break;
     }
+    let memExecString = "free | awk '/^" + this.config.memTrans + ":/ {print $4*100/$2}'";
 
     async.parallel([
       // get cpu temp
@@ -64,7 +65,7 @@ module.exports = NodeHelper.create({
       // get system load
       async.apply(exec, 'cat /proc/loadavg'),
       // get free ram in %
-      async.apply(exec, "free | awk '/^Mem:/ {print $4*100/$2}'"),
+      async.apply(exec, memExecString),
       // get uptime
       async.apply(exec, 'cat /proc/uptime'),
       // get root free-space
@@ -72,12 +73,12 @@ module.exports = NodeHelper.create({
 
     ],
     function (err, res) {
-      var stats = {};
+      let stats = {};
       stats.cpuTemp = res[0][0];
       stats.sysLoad = res[1][0].split(' ');
       stats.freeMem = res[2][0];
       stats.upTime = res[3][0].split(' ');
-	  stats.freeSpace = res[4][0];
+	    stats.freeSpace = res[4][0];
       // console.log(stats);
       self.sendSocketNotification('STATS', stats);
     });

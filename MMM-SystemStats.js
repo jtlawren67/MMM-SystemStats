@@ -52,7 +52,9 @@ Module.register('MMM-SystemStats', {
     this.stats.freeMem = this.translate('LOADING').toLowerCase();
     this.stats.upTime = this.translate('LOADING').toLowerCase();
     this.stats.freeSpace = this.translate('LOADING').toLowerCase();
-    this.sendSocketNotification('CONFIG', this.config);
+    let config = this.config;
+    config.memTrans = this.translate('MEM_NAME');
+    this.sendSocketNotification('CONFIG', config);
   },
 
   socketNotificationReceived: function(notification, payload) {
