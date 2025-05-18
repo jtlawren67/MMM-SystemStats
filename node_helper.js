@@ -57,15 +57,14 @@ module.exports = NodeHelper.create({
         temp_conv = 'awk \'{printf("%.1f°K\\n",($1/1e3)+273.15)}\'';
         break;
     }
-    let memExecString = 'free | awk \'/^Speicher:/ {printf "%.0f\\n", ($7*100/$2)}\'';
 
     async.parallel([
       // get cpu temp
       async.apply(exec, temp_conv + ' /sys/class/thermal/thermal_zone0/temp'),
       // get system load
-      async.apply(exec, 'cat /proc/loadavg'),
+      async.apply(exec, 'top -bn2 | grep "CPU(s)" | tail -n1 | awk \'{printf "%.1f", (100 - $8)}\'cat /proc/loadavg'),
       // get free ram in %
-      async.apply(exec, memExecString),
+      async.apply(exec, 'free | awk \'/^' + this.config.memTrans + ':/ {printf "%.0f\\n", ($7*100/$2)}\''),
       // get uptime
       async.apply(exec, 'cat /proc/uptime'),
       // get root free-space
@@ -75,15 +74,12 @@ module.exports = NodeHelper.create({
     function (err, res) {
       let stats = {};
       stats.cpuTemp = res[0][0];
-      stats.sysLoad = res[1][0].split(' ');
+      stats.sysLoad = res[1][0];
       stats.freeMem = res[2][0];
       stats.upTime = res[3][0].split(' ');
-	    stats.freeSpace = res[4][0];
+      stats.freeSpace = res[4][0];
       // console.log(stats);
       self.sendSocketNotification('STATS', stats);
     });
   },
-
-  // http://unix.stackexchange.com/questions/69185/getting-cpu-usage-same-every-time/69194#69194
-
 });
