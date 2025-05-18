@@ -71,8 +71,8 @@ Module.register('MMM-SystemStats', {
           this.sendSocketNotification('ALERT', {config: this.config, type: 'WARNING', message: this.translate("TEMP_THRESHOLD_WARNING") + ' (' + this.stats.cpuTemp + '/' + this.config.thresholdCPUTemp + ')' });
         }
       }
-      this.stats.sysLoad = payload.sysLoad[0];
-      this.stats.freeMem = Number(payload.freeMem).toFixed() + '%';
+      this.stats.sysLoad = payload.sysLoad + '%';
+      this.stats.freeMem = payload.freeMem + '%';
       upTime = parseInt(payload.upTime[0]);
       this.stats.upTime = moment.duration(upTime, "seconds").humanize();
       this.stats.freeSpace = payload.freeSpace;
