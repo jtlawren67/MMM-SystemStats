@@ -57,7 +57,7 @@ module.exports = NodeHelper.create({
         temp_conv = 'awk \'{printf("%.1f°K\\n",($1/1e3)+273.15)}\'';
         break;
     }
-    let memExecString = "free | awk '/^" + this.config.memTrans + ":/ {print int($4*100/$2)}'";
+    let memExecString = 'free | awk \'/^Speicher:/ {printf "%.0f\\n", ($7*100/$2)}\'';
 
     async.parallel([
       // get cpu temp
