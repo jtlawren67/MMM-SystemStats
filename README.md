@@ -1,3 +1,5 @@
+# This fork was to fix some issue appearing on my Raspberry Pi regarding System Load and formatting.  No guarantees that it will ever be updated or that it will work more generally
+
 # Module: MMM-SystemStats
 This [MagicMirror](https://github.com/MichMich/MagicMirror) modules, shows the processor temperature, system load, available RAM, uptime and free disk space.
 
