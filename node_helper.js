@@ -11,7 +11,6 @@ const NodeHelper = require('node_helper');
 const async = require('async');
 const exec = require('child_process').exec;
 const request = require('request');
-const ping = require('ping');
 
 module.exports = NodeHelper.create({
   start: function() {
