@@ -52,6 +52,7 @@ Module.register('MMM-SystemStats', {
     this.stats.freeMem = this.translate('LOADING').toLowerCase();
     this.stats.upTime = this.translate('LOADING').toLowerCase();
     this.stats.freeSpace = this.translate('LOADING').toLowerCase();
+    this.stats.ping = this.translate('LOADING').toLowerCase();
     let config = this.config;
     config.memTrans = this.translate('MEM_NAME');
     this.sendSocketNotification('CONFIG', config);
@@ -76,6 +77,7 @@ Module.register('MMM-SystemStats', {
       upTime = parseInt(payload.upTime[0]);
       this.stats.upTime = moment.duration(upTime, "seconds").humanize();
       this.stats.freeSpace = payload.freeSpace;
+      this.stats.ping = payload.ping;
       this.updateDom(this.config.animationSpeed);
     }
   },
@@ -105,6 +107,10 @@ Module.register('MMM-SystemStats', {
       freeSpace: {
         text: 'DISK_FREE',
         icon: 'fa-hdd',
+      },
+      ping: {
+        text: 'PING',
+        icon: 'fa-wifi',
       },
     };
 

@@ -6,5 +6,6 @@
 	"DISK_FREE": "Avail Space",
 	"TEMP_THRESHOLD_WARNING": "CPU Temp has exceeded threshold",
 	"LOADING": "Loading ...",
-	"MEM_NAME": "Mem"
+	"MEM_NAME": "Mem",
+	"PING": "Network"
 }

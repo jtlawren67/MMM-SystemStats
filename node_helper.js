@@ -11,6 +11,7 @@ const NodeHelper = require('node_helper');
 const async = require('async');
 const exec = require('child_process').exec;
 const request = require('request');
+const ping = require('ping');
 
 module.exports = NodeHelper.create({
   start: function() {
@@ -69,7 +70,8 @@ module.exports = NodeHelper.create({
       async.apply(exec, 'cat /proc/uptime'),
       // get root free-space
       async.apply(exec, "df -h|grep /dev/mmcblk0p2|awk '{print $4}'"),
-
+      // get network speed from ping
+      async.apply(exec, "ping -c 1 -W 1 8.8.8.8 | grep time= | awk -F'time=' '{print $2}' || echo 'timeout'"),
     ],
     function (err, res) {
       let stats = {};
@@ -78,6 +80,7 @@ module.exports = NodeHelper.create({
       stats.freeMem = res[2][0];
       stats.upTime = res[3][0].split(' ');
       stats.freeSpace = res[4][0];
+      stats.ping = res[5][0]
       // console.log(stats);
       self.sendSocketNotification('STATS', stats);
     });
